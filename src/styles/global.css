@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@import "./toc.css";
+
+/* 添加平滑滚动效果 */
+html {
+  scroll-behavior: smooth;
+}
