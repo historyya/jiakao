@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import type { MarkdownHeading } from "astro";
 import clsx from "clsx";
+import { motion, AnimatePresence } from "motion/react";
 
 interface TableOfContentsProps {
   headings: MarkdownHeading[];
@@ -47,11 +48,19 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
   if (tocItems.length === 0) return null;
 
   return (
-    <nav aria-label="目录导航">
+    <motion.nav
+      aria-label="目录导航"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <ul className="space-y-2 text-sm">
         {tocItems.map((heading) => (
-          <li
+          <motion.li
             key={heading.id}
+            initial={{ opacity: 0, x: -10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.3, delay: heading.level * 0.1 }}
             className={clsx(
               "transition-colors",
               // 缩进逻辑
@@ -66,7 +75,7 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                 : "text-slate-600 dark:text-slate-400"
             )}
           >
-            <a
+            <motion.a
               href={`#${heading.id}`}
               onClick={(e) => {
                 e.preventDefault();
@@ -77,12 +86,14 @@ export default function TableOfContents({ headings }: TableOfContentsProps) {
                 });
               }}
               className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors block py-1"
+              whileHover={{ x: 5 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
               {heading.text}
-            </a>
-          </li>
+            </motion.a>
+          </motion.li>
         ))}
       </ul>
-    </nav>
+    </motion.nav>
   );
 }

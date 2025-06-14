@@ -1,0 +1,140 @@
+---
+
+---
+
+<header
+  class="fixed top-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 z-50 transition-colors"
+>
+  <div class="max-w-5xl mx-auto px-4 h-16 flex justify-between items-center">
+    <a href="/" class="flex items-center gap-2 group">
+      <span
+        class="text-lg font-bold text-slate-800 dark:text-white transition-colors"
+        >
+        <img src="/favicon.svg" alt="logo" class="w-10 h-10" />
+        </span
+      >
+    </a>
+
+    <div class="flex items-center gap-6">
+      <nav class="hidden md:flex gap-6">
+        <a
+          href="/"
+          class="text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 transition-colors"
+        >
+          Home
+        </a>
+        <a
+          href="/"
+          class="text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 transition-colors"
+        >
+          About
+        </a>
+      </nav>
+
+      <!-- 深色模式切换 -->
+      <button
+        id="theme-toggle"
+        aria-label="切换主题"
+        class="p-2 rounded-full text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+      >
+        <div class="theme-toggle-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="sun-icon"
+            class="h-5 w-5 hidden dark:block"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+            ></path>
+          </svg>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            id="moon-icon"
+            class="h-5 w-5 block dark:hidden"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+            ></path>
+          </svg>
+        </div>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .theme-toggle-icon {
+    @apply transition-transform duration-500;
+  }
+
+  #theme-toggle:hover .theme-toggle-icon {
+    @apply rotate-30;
+  }
+
+  .dark .theme-toggle-icon svg {
+    @apply rotate-40;
+  }
+</style>
+
+<script>
+  // 主题切换逻辑
+  const themeToggle = document.getElementById("theme-toggle");
+
+  // 初始化主题
+  const getThemePreference = () => {
+    return (
+      localStorage.getItem("theme") ||
+      (window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light")
+    );
+  };
+
+  // 应用主题
+  const setTheme = (theme: string) => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
+    localStorage.setItem("theme", theme);
+  };
+
+  // 初始化主题
+  setTheme(getThemePreference() || "light");
+
+  // 监听系统主题变化
+  window
+    .matchMedia("(prefers-color-scheme: dark)")
+    .addEventListener("change", ({ matches }) => {
+      if (!localStorage.getItem("theme")) {
+        setTheme(matches ? "dark" : "light");
+      }
+    });
+
+  // 主题切换事件
+  themeToggle?.addEventListener("click", () => {
+    const isDark = document.documentElement.classList.contains("dark");
+    setTheme(isDark ? "light" : "dark");
+
+    // 添加动画效果
+    const sunIcon = document.getElementById("sun-icon");
+    const moonIcon = document.getElementById("moon-icon");
+
+    if (isDark) {
+      sunIcon?.classList.add("hidden");
+      moonIcon?.classList.remove("hidden");
+    } else {
+      sunIcon?.classList.remove("hidden");
+      moonIcon?.classList.add("hidden");
+    }
+  });
+</script>

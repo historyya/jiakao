@@ -2,7 +2,151 @@
 @plugin "@tailwindcss/typography";
 @import "./toc.css";
 
-/* 添加平滑滚动效果 */
-html {
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --scrollbar-width: 6px;
+  --scrollbar-thumb-color: rgba(100, 116, 139, 0.5);
+  --scrollbar-thumb-hover: rgba(59, 130, 246, 0.7);
+  --selection-bg: rgba(59, 130, 246, 0.7);
+  --selection-color: white;
+
+  /* 动画持续时间 */
+  --transition-duration: 300ms;
+
+  /* 滚动行为 */
   scroll-behavior: smooth;
+}
+
+:is(.dark) {
+  color-scheme: dark;
+
+  --scrollbar-thumb-color: rgba(148, 163, 184, 0.5);
+  --scrollbar-thumb-hover: rgba(96, 165, 250, 0.7);
+}
+
+/* 添加平滑滚动效果 */
+html,
+body,
+*,
+*::before,
+*::after {
+  scroll-behavior: smooth;
+  transition: background-color var(--transition-duration) ease,
+    border-color var(--transition-duration) ease,
+    color var(--transition-duration) ease,
+    box-shadow var(--transition-duration) ease;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: var(--scrollbar-width);
+  height: var(--scrollbar-width);
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb-color);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+/* 选择文本样式 */
+::selection {
+  background-color: var(--selection-bg);
+  color: var(--selection-color);
+}
+
+/* 动画类 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-fade-down {
+  animation: fadeDown 0.6s ease-out forwards;
+}
+
+/* 响应式目录布局 */
+@media (max-width: 1024px) {
+  #toc-container {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    top: auto;
+    z-index: 40;
+  }
+
+  #toc-content {
+    position: absolute;
+    bottom: 48px;
+    right: 0;
+    max-height: 60vh;
+    width: 250px;
+  }
+}
+
+/* 打印样式优化 */
+@media print {
+  #toc-container,
+  #scroll-to-top,
+  header[role="banner"],
+  footer {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  main {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+
+  a {
+    color: black !important;
+    text-decoration: underline !important;
+  }
+}
+
+/* 辅助类 */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
 }

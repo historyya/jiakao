@@ -1,8 +1,13 @@
 ---
-import Prose from '../components/Prose.astro';
-import TableOfContents from '../components/TableOfContents';
-import '../styles/global.css';
-import type { MarkdownLayoutProps } from 'astro';
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import PageTransition from "../components/PageTransition.astro";
+import Prose from "../components/Prose.astro";
+import ScrollToTop from "../components/ScrollToTop";
+import TableOfContents from "../components/TableOfContents";
+import TocToggle from "../components/TocToggle";
+import "../styles/global.css";
+import type { MarkdownLayoutProps } from "astro";
 
 type Props = MarkdownLayoutProps<{
   title: string;
@@ -10,123 +15,167 @@ type Props = MarkdownLayoutProps<{
 }>;
 
 const { frontmatter, headings } = Astro.props;
-const pageTitle = `${frontmatter.title} - 驾照考试题库`;
+const pageTitle = `${frontmatter.title} - 驾照题库`;
 ---
 
 <html lang="zh-CN">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
-		<meta name="description" content="驾照考试题库，帮助您轻松通过科目一考试" />
-	</head>
-	<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
-		<div class="flex justify-center relative">
-			<!-- 主内容区 -->
-			<main class="flex flex-col min-h-dvh max-w-3xl w-full px-6 pb-12 pt-18">
-				<header class="mb-12">
-					<h1 class="text-4xl font-bold leading-normal mb-2">{frontmatter.title}</h1>
-					<span class="text-sm text-slate-500 dark:text-slate-400">更新于: {frontmatter.date.slice(0, 10)}</span>
-				</header>
-				<Prose>
-					<slot />
-				</Prose>
-			</main>
-			
-			<!-- 侧边目录 -->
-			<aside id="toc-container" class="fixed right-4 top-24 transition-all duration-300 ease-in-out z-10">
-				<div class="relative">
-					<!-- 切换按钮 -->
-					<button 
-						id="toggle-toc" 
-						class="absolute -left-10 top-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-l-md shadow-md transition-colors flex items-center justify-center"
-						aria-label="切换目录"
-						title="切换目录"
-					>
-						<svg id="toc-icon-show" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
-						</svg>
-						<svg id="toc-icon-hide" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-						</svg>
-					</button>
-					
-					<!-- 目录内容 -->
-					<div id="toc-content" class="bg-white dark:bg-slate-900 rounded-lg shadow-md border border-slate-200 dark:border-slate-700 p-4 w-64 max-h-[80vh] overflow-y-auto">
-						<h2 class="text-sm font-semibold mb-3 text-slate-700 dark:text-slate-300">目录</h2>
-						<TableOfContents headings={headings} client:load />
-					</div>
-				</div>
-			</aside>
-		</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{pageTitle}</title>
+    <meta name="description" content="驾照考试题库，帮助您轻松通过科目一考试" />
+    <meta
+      name="theme-color"
+      content="#ffffff"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0f172a"
+      media="(prefers-color-scheme: dark)"
+    />
+  </head>
+  <body
+    class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors"
+  >
+    <PageTransition />
+    <Header />
 
-		<!-- 回到顶部按钮 -->
-		<button 
-			id="scroll-to-top" 
-			class="fixed bottom-8 right-8 bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-full shadow-lg transition-all opacity-0 invisible z-50"
-			aria-label="返回顶部"
-			title="返回顶部"
-		>
-			<svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-				<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
-			</svg>
-		</button>
-	</body>
+    <div class="flex-grow flex justify-center relative pt-16">
+      <!-- 主内容区 -->
+      <main class="flex flex-col max-w-3xl w-full px-4 sm:px-6 py-8 sm:py-12">
+        <header class="mb-8 sm:mb-12 animate-fade-down">
+          <h1 class="text-3xl sm:text-4xl font-bold leading-tight mb-2">
+            {frontmatter.title}
+          </h1>
+          <span class="text-sm text-slate-500 dark:text-slate-400"
+            >Last updated: {frontmatter.date.slice(0, 10)}</span
+          >
+        </header>
+        <Prose>
+          <slot />
+        </Prose>
+      </main>
+
+      <!-- 侧边目录 -->
+      <aside
+        id="toc-container-desktop"
+        class="fixed right-4 top-24 z-10 hidden lg:block"
+      >
+        <div class="relative">
+          <!-- 切换按钮 -->
+          <TocToggle
+            contentId="toc-content-desktop"
+            position="desktop"
+            client:load
+          />
+
+          <!-- 目录内容 -->
+          <div
+            id="toc-content-desktop"
+            class="bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-lg shadow-lg border border-slate-200 dark:border-slate-800 p-4 w-64 max-h-[80vh] overflow-y-auto transition-colors"
+          >
+            <h2
+              class="text-sm font-semibold mb-3 text-slate-700 dark:text-slate-300"
+            >
+              目录
+            </h2>
+            <TableOfContents headings={headings} client:load />
+          </div>
+        </div>
+      </aside>
+
+      <aside
+        id="toc-container-mobile"
+        class="fixed bottom-22 right-8 z-10 lg:hidden"
+      >
+        <div class="relative">
+          <TocToggle
+            contentId="toc-content-mobile"
+            position="mobile"
+            client:load
+          />
+
+          <div
+            id="toc-content-mobile"
+            class="absolute bottom-full right-0 mb-2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm rounded-lg shadow-lg border border-slate-200 dark:border-slate-800 p-4 w-64 max-h-[60vh] overflow-y-auto transition-colors hidden"
+          >
+            <h2
+              class="text-sm font-semibold mb-3 text-slate-700 dark:text-slate-300"
+            >
+              目录
+            </h2>
+            <TableOfContents headings={headings} client:load />
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <Footer />
+
+    <!-- 回到顶部按钮 -->
+    <ScrollToTop client:load />
+  </body>
 </html>
 
 <script>
-	document.addEventListener('DOMContentLoaded', () => {
-		// DOM元素
-		const scrollToTopButton = document.getElementById('scroll-to-top');
-		const tocContent = document.getElementById('toc-content');
-		const toggleButton = document.getElementById('toggle-toc');
-		const showIcon = document.getElementById('toc-icon-show');
-		const hideIcon = document.getElementById('toc-icon-hide');
-		
-		// 滚动处理
-		const handleScroll = () => {
-			if (window.scrollY > 300) {
-				scrollToTopButton?.classList.remove('opacity-0', 'invisible');
-				scrollToTopButton?.classList.add('opacity-100');
-			} else {
-				scrollToTopButton?.classList.remove('opacity-100');
-				scrollToTopButton?.classList.add('opacity-0', 'invisible');
-			}
-		};
-		
-		// 回到顶部
-		scrollToTopButton?.addEventListener('click', () => {
-			window.scrollTo({ top: 0, behavior: 'smooth' });
-		});
-		
-		// 目录状态
-		const tocVisible = localStorage.getItem('tocVisible') !== 'false';
-		
-		// 设置目录初始状态
-		const updateTocVisibility = (isVisible: boolean) => {
-			if (isVisible) {
-				tocContent?.classList.remove('hidden');
-				showIcon?.classList.add('hidden');
-				hideIcon?.classList.remove('hidden');
-			} else {
-				tocContent?.classList.add('hidden');
-				showIcon?.classList.remove('hidden');
-				hideIcon?.classList.add('hidden');
-			}
-		};
-		
-		// 初始化
-		updateTocVisibility(tocVisible);
-		window.addEventListener('scroll', handleScroll);
-		handleScroll(); // 初始检查
-		
-		// 切换目录
-		toggleButton?.addEventListener('click', () => {
-			const isVisible = !tocContent?.classList.contains('hidden');
-			updateTocVisibility(!isVisible);
-			localStorage.setItem('tocVisible', (!isVisible).toString());
-		});
-	});
+  // 页面加载时的动画效果
+  document.addEventListener("DOMContentLoaded", () => {
+    const mainContent = document.querySelector("main");
+    if (mainContent) {
+      mainContent.classList.add("animate-fade-in");
+    }
+
+    // 点击外部区域关闭移动版目录
+    document.addEventListener("click", (e) => {
+      const tocContentMobile = document.getElementById("toc-content-mobile");
+      const tocToggleMobile = document.querySelector(
+        "#toc-container-mobile button"
+      );
+
+      if (
+        tocContentMobile &&
+        !tocContentMobile.classList.contains("hidden") &&
+        !tocContentMobile.contains(e.target as Node) &&
+        e.target !== tocToggleMobile &&
+        !tocToggleMobile?.contains(e.target as Node)
+      ) {
+        tocContentMobile.classList.add("hidden");
+      }
+    });
+  });
 </script>
+
+<style>
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+  }
+
+  .animate-fade-down {
+    animation: fadeDown 0.6s ease-out forwards;
+  }
+</style>

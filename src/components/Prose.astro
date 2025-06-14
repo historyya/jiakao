@@ -3,7 +3,7 @@
 ---
 
 <div
-  class="prose dark:prose-invert max-w-none 
+  class="prose dark:prose-invert max-w-none animate-content-fade
   prose-headings:font-semibold prose-headings:text-slate-800 dark:prose-headings:text-slate-100
   prose-h1:text-3xl prose-h1:mb-6 
   prose-h2:text-2xl prose-h2:mt-8 prose-h2:mb-4 prose-h2:pb-2 prose-h2:border-b prose-h2:border-slate-200 dark:prose-h2:border-slate-700
@@ -21,3 +21,27 @@
   prose-li:my-1">
   <slot />
 </div>
+
+<style>
+  @keyframes contentFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .animate-content-fade {
+    animation: contentFade 0.8s ease-out forwards;
+  }
+  
+  /* 为不同元素添加交错动画 */
+  .prose h2, .prose h3, .prose h4, .prose p, .prose ul, .prose ol, .prose img, .prose table {
+    opacity: 0;
+    animation: contentFade 0.5s ease-out forwards;
+  }
+  
+  .prose h2 { animation-delay: 0.1s; }
+  .prose h3 { animation-delay: 0.2s; }
+  .prose p { animation-delay: 0.3s; }
+  .prose ul, .prose ol { animation-delay: 0.4s; }
+  .prose img { animation-delay: 0.5s; }
+  .prose table { animation-delay: 0.6s; }
+</style>
