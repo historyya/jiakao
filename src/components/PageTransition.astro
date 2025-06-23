@@ -29,14 +29,14 @@
 
 <script>
   // 页面加载完成后触发过渡动画
-  window.addEventListener('load', () => {
+  window.addEventListener("load", () => {
     setTimeout(() => {
-      document.documentElement.classList.add('loaded');
+      document.documentElement.classList.add("loaded");
     }, 100);
   });
 
   // 页面离开时的过渡动画
-  document.addEventListener('astro:before-preparation', () => {
-    document.documentElement.classList.remove('loaded');
+  document.addEventListener("astro:before-preparation", () => {
+    document.documentElement.classList.remove("loaded");
   });
 </script>

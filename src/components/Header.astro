@@ -9,68 +9,49 @@
     <a href="/" class="flex items-center gap-2 group">
       <span
         class="text-lg font-bold text-slate-800 dark:text-white transition-colors"
-        >
-        <img src="/favicon.svg" alt="logo" class="w-10 h-10" />
-        </span
       >
+        <img src="/favicon.svg" alt="logo" class="w-10 h-10" />
+      </span>
     </a>
 
-    <div class="flex items-center gap-6">
-      <nav class="hidden md:flex gap-6">
-        <a
-          href="/"
-          class="text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 transition-colors"
+    <button
+      id="theme-toggle"
+      aria-label="切换主题"
+      class="p-2 rounded-full text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
+    >
+      <div class="theme-toggle-icon">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          id="sun-icon"
+          class="h-5 w-5 hidden dark:block"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          Home
-        </a>
-        <a
-          href="/"
-          class="text-slate-600 hover:text-blue-600 dark:text-slate-300 dark:hover:text-blue-400 transition-colors"
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+          ></path>
+        </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          id="moon-icon"
+          class="h-5 w-5 block dark:hidden"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
         >
-          About
-        </a>
-      </nav>
-
-      <!-- 深色模式切换 -->
-      <button
-        id="theme-toggle"
-        aria-label="切换主题"
-        class="p-2 rounded-full text-slate-600 hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all"
-      >
-        <div class="theme-toggle-icon">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            id="sun-icon"
-            class="h-5 w-5 hidden dark:block"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-            ></path>
-          </svg>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            id="moon-icon"
-            class="h-5 w-5 block dark:hidden"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-            ></path>
-          </svg>
-        </div>
-      </button>
-    </div>
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+          ></path>
+        </svg>
+      </div>
+    </button>
   </div>
 </header>
 
